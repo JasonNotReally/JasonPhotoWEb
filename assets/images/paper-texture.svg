@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="560" height="560" viewBox="0 0 560 560">
+  <defs>
+    <filter id="coarse" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.018 0.085" numOctaves="4" seed="21" result="large"/>
+      <feColorMatrix in="large" type="saturate" values="0" result="largeMono"/>
+      <feTurbulence type="fractalNoise" baseFrequency="0.72" numOctaves="3" seed="9" result="fine"/>
+      <feColorMatrix in="fine" type="saturate" values="0" result="fineMono"/>
+      <feBlend in="largeMono" in2="fineMono" mode="multiply"/>
+      <feComponentTransfer>
+        <feFuncR type="linear" slope="0.68" intercept="0.12"/>
+        <feFuncG type="linear" slope="0.62" intercept="0.16"/>
+        <feFuncB type="linear" slope="0.54" intercept="0.2"/>
+        <feFuncA type="table" tableValues="0.05 0.34"/>
+      </feComponentTransfer>
+    </filter>
+  </defs>
+  <rect width="560" height="560" fill="#d8cfb8"/>
+  <rect width="560" height="560" filter="url(#coarse)" opacity="0.58"/>
+  <g fill="none" stroke="#745b37" stroke-linecap="round" opacity="0.17">
+    <path d="M14 82c31-6 69 5 118-2" stroke-width="1.2"/>
+    <path d="M226 63c46 8 88-10 151-2" stroke-width="0.7"/>
+    <path d="M402 118c42-5 78 6 139-3" stroke-width="1"/>
+    <path d="M-9 211c54 5 91-8 151 0" stroke-width="0.8"/>
+    <path d="M276 251c62-9 104 11 170-1" stroke-width="1.1"/>
+    <path d="M50 389c57-8 112 10 182 1" stroke-width="1"/>
+    <path d="M351 441c50 7 103-7 190 3" stroke-width="0.8"/>
+    <path d="M93 18c-6 48 6 81-2 129" stroke-width="0.7"/>
+    <path d="M432 181c8 52-9 94 3 149" stroke-width="1"/>
+    <path d="M188 392c-4 39 5 82-2 142" stroke-width="0.8"/>
+  </g>
+  <g fill="#765b35" opacity="0.14">
+    <ellipse cx="42" cy="314" rx="1.5" ry="4" transform="rotate(18 42 314)"/>
+    <ellipse cx="165" cy="179" rx="2.5" ry="1" transform="rotate(-21 165 179)"/>
+    <ellipse cx="337" cy="96" rx="1.2" ry="3.5" transform="rotate(39 337 96)"/>
+    <ellipse cx="504" cy="367" rx="3" ry="1.3" transform="rotate(-8 504 367)"/>
+    <ellipse cx="261" cy="517" rx="1.3" ry="3" transform="rotate(24 261 517)"/>
+  </g>
+</svg>
