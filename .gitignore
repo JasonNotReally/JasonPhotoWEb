@@ -1,0 +1,7 @@
+# Local source photographs; never publish originals.
+/Website/
+/Website_source/
+
+# Operating-system files.
+.DS_Store
+Thumbs.db
