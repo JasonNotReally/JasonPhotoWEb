@@ -1,6 +1,7 @@
 # Local source photographs; never publish originals.
 /Website/
 /Website_source/
+/REVIEW_STRUCTURE.txt
 
 # Operating-system files.
 .DS_Store
