@@ -34,7 +34,7 @@
   --paper: #d8cfb8;
   --paper-light: #e8dfca;
   --ink: #171613;
-  --red: #a62b1f;
+  --red: #c9281c;
   --olive: #6b7050;
   --blue-grey: #667780;
   --ochre: #b27d3e;
@@ -46,8 +46,10 @@
   /* Ambient motion: increase duration to slow it down; reduce distance for less movement. */
   --ambient-duration: 16s;
   --ambient-duration-slow: 20s;
-  --ambient-distance-x: 1.65rem;
-  --ambient-distance-y: -1.45rem;
+  --ambient-distance-x: 0.8rem;
+  --ambient-distance-y: -0.7rem;
+  /* Entrance motion: shapes strike in fast and stop hard. */
+  --ease-strike: cubic-bezier(0.16, 1, 0.3, 1);
   --review-accent: var(--red);
   --review-secondary: var(--blue-grey);
   color-scheme: light;
@@ -251,28 +253,13 @@ main {
 .hero::before {
   position: absolute;
   z-index: -1;
-  top: clamp(1rem, 4vw, 4rem);
-  right: min(-12vw, -4rem);
-  width: min(42vw, 38rem);
-  height: clamp(2.5rem, 6vw, 6rem);
-  transform: rotate(-9deg);
+  top: clamp(0.5rem, 2vw, 2rem);
+  right: min(-10vw, -3rem);
+  width: min(54vw, 48rem);
+  height: clamp(5rem, 13vw, 13rem);
+  transform: rotate(-14deg);
   background: var(--red);
-  clip-path: polygon(0 33%, 100% 0, 100% 100%, 0 67%);
-  content: "";
-}
-
-.hero::after {
-  position: absolute;
-  z-index: -2;
-  right: 24%;
-  bottom: 4%;
-  width: min(58vw, 54rem);
-  height: min(28vw, 24rem);
-  transform: rotate(-5deg);
-  background:
-    radial-gradient(ellipse at 32% 50%, rgb(178 125 62 / 28%), transparent 65%),
-    radial-gradient(ellipse at 70% 55%, rgb(107 112 80 / 22%), transparent 68%);
-  filter: blur(18px);
+  clip-path: polygon(0 50%, 100% 0, 100% 100%);
   content: "";
 }
 
@@ -288,19 +275,12 @@ main {
   display: block;
 }
 
-.hero::after,
-.hero-geometry span,
-.home-work::before,
-.home-work::after,
-.home-review::before,
-.project-card::before {
+.geometry-disc,
+.geometry-axis {
   animation: ambient-drift var(--ambient-duration) ease-in-out infinite alternate;
 }
 
-.geometry-axis,
-.geometry-point,
-.home-work::before,
-.project-card:nth-child(even)::before {
+.geometry-axis {
   animation-delay: -9s;
   animation-direction: alternate-reverse;
   animation-duration: var(--ambient-duration-slow);
@@ -346,7 +326,7 @@ main {
 }
 
 .geometry-point {
-  right: 34%;
+  right: 27.5%;
   bottom: 13%;
   width: clamp(2.6rem, 5vw, 5rem);
   aspect-ratio: 1;
@@ -392,13 +372,13 @@ main {
 .hero-copy::before {
   position: absolute;
   z-index: -1;
-  top: -12%;
-  left: -3%;
-  width: 68%;
-  height: 126%;
-  transform: rotate(2deg);
-  background: color-mix(in srgb, var(--blue-grey) 16%, transparent);
-  clip-path: polygon(3% 8%, 96% 0, 100% 88%, 6% 100%, 0 42%);
+  top: -14%;
+  left: -4%;
+  width: 66%;
+  height: 128%;
+  transform: rotate(-3deg);
+  background: var(--red);
+  clip-path: polygon(0 6%, 100% 0, 94% 100%, 0 94%);
   content: "";
 }
 
@@ -414,9 +394,7 @@ main {
   z-index: -1;
   inset: 0;
   transform: rotate(-4deg);
-  border: 2px solid var(--ink);
-  background: color-mix(in srgb, var(--blue-grey) 52%, var(--paper));
-  box-shadow: 1.1rem 0.9rem 0 rgb(23 22 19 / 14%);
+  background: var(--ink);
   clip-path: polygon(5% 17%, 100% 0, 95% 82%, 0 100%);
   content: "";
 }
@@ -429,7 +407,7 @@ main {
   width: 5.5rem;
   height: 2.6rem;
   transform: rotate(7deg);
-  background: var(--ink);
+  background: var(--red);
   content: "";
 }
 
@@ -504,12 +482,14 @@ main {
 
 .hero-title {
   max-width: 8ch;
+  color: var(--paper-light);
   font-size: clamp(4.4rem, 13vw, 12rem);
 }
 
 .hero-statement {
   max-width: 19ch;
   margin: 0;
+  color: var(--paper-light);
   font-size: clamp(1.25rem, 2vw, 2rem);
   line-height: 1.2;
 }
@@ -527,18 +507,28 @@ main {
   gap: 2rem;
   margin-bottom: clamp(2rem, 4vw, 4rem);
   padding-bottom: 0.8rem;
-  border-bottom: 1px solid var(--ink);
+}
+
+.section-heading::after {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 4px;
+  transform-origin: left;
+  background: var(--ink);
+  content: "";
 }
 
 .section-heading::before {
   position: absolute;
+  z-index: 1;
   right: clamp(1rem, 12vw, 12rem);
   bottom: -1.25rem;
   width: 2.4rem;
   height: 2.4rem;
-  border: 1px solid var(--ochre);
   border-radius: 50%;
-  background: color-mix(in srgb, var(--ochre) 18%, transparent);
+  background: var(--red);
   content: "";
 }
 
@@ -618,9 +608,10 @@ main {
   width: 54%;
   height: 43%;
   transform: rotate(-2deg);
-  background: color-mix(in srgb, var(--ochre) 25%, transparent);
+  background: var(--ink);
   clip-path: polygon(0 9%, 91% 0, 100% 82%, 12% 100%);
   content: "";
+  transition: translate 420ms var(--ease-strike), opacity 160ms ease;
 }
 
 .project-card:nth-child(3n + 2)::before {
@@ -628,13 +619,13 @@ main {
   right: -1rem;
   bottom: 3.4rem;
   left: auto;
-  background: color-mix(in srgb, var(--olive) 24%, transparent);
+  background: var(--red);
   transform: rotate(3deg);
 }
 
 .project-card:nth-child(3n)::before {
   width: 68%;
-  background: color-mix(in srgb, var(--blue-grey) 20%, transparent);
+  background: var(--ink);
   transform: rotate(-4deg);
 }
 
@@ -817,7 +808,7 @@ main {
   width: min(34vw, 30rem);
   height: 52%;
   transform: rotate(6deg);
-  background: color-mix(in srgb, var(--blue-grey) 22%, transparent);
+  background: var(--red);
   clip-path: polygon(8% 0, 100% 13%, 88% 100%, 0 82%);
   content: "";
 }
@@ -1479,11 +1470,108 @@ main {
   opacity: 1;
 }
 
+/* Project cards: the flat panel strikes in first, then the photograph fades up. */
+.js .project-card[data-reveal] {
+  opacity: 1;
+}
+
+.js .project-card[data-reveal] > a {
+  opacity: 0;
+  transition: opacity 360ms ease 160ms;
+}
+
+.js .project-card[data-reveal].is-visible > a {
+  opacity: 1;
+}
+
+.js .project-card[data-reveal]::before {
+  opacity: 0;
+  translate: -3rem 1.2rem;
+}
+
+.js .project-card[data-reveal]:nth-child(3n + 2)::before {
+  translate: 3rem 1.2rem;
+}
+
+.js .project-card[data-reveal].is-visible::before {
+  opacity: 1;
+  translate: 0 0;
+}
+
+/* Hover: the panel slips out from under the photograph, like a misregistered print. */
+.project-card:hover::before,
+.project-card:focus-within::before,
+.js .project-card[data-reveal].is-visible:hover::before,
+.js .project-card[data-reveal].is-visible:focus-within::before {
+  translate: -0.45rem -0.45rem;
+}
+
+.project-card:nth-child(3n + 2):hover::before,
+.project-card:nth-child(3n + 2):focus-within::before,
+.js .project-card[data-reveal].is-visible:nth-child(3n + 2):hover::before,
+.js .project-card[data-reveal].is-visible:nth-child(3n + 2):focus-within::before {
+  translate: 0.45rem 0.45rem;
+}
+
+/* Section headings: the rule draws left to right, then the red marker lands. */
+.js .section-heading::after {
+  transform: scaleX(0);
+  transition: transform 520ms var(--ease-strike);
+}
+
+.js .section-heading::before {
+  scale: 0;
+  transition: scale 220ms var(--ease-strike) 400ms;
+}
+
+.js .section-heading.is-visible::after {
+  transform: scaleX(1);
+}
+
+.js .section-heading.is-visible::before {
+  scale: 1;
+}
+
+/* Home hero entrance, played once: wedge from the right, name slab from the left,
+   statement card drops in, text follows. The photograph only fades (data-reveal). */
+.hero::before {
+  transition: translate 620ms var(--ease-strike);
+}
+
+.hero-copy::before {
+  transition: translate 560ms var(--ease-strike) 120ms;
+}
+
+.hero-statement-frame::before {
+  transition: translate 420ms var(--ease-strike) 460ms, opacity 120ms ease 460ms;
+}
+
+.hero-statement-frame::after {
+  transition: scale 240ms var(--ease-strike) 700ms;
+}
+
+.js .hero:not(.hero-ready)::before {
+  translate: 70vw -17vw;
+}
+
+.js .hero:not(.hero-ready) .hero-copy::before {
+  translate: -115% 0;
+}
+
+.js .hero:not(.hero-ready) .hero-statement-frame::before {
+  opacity: 0;
+  translate: 0 -3rem;
+}
+
+.js .hero:not(.hero-ready) .hero-statement-frame::after {
+  scale: 0;
+}
+
 .js .hero-title,
 .js .hero-statement {
   opacity: 0;
   transform: translateY(6px);
-  transition: opacity 360ms ease, transform 360ms cubic-bezier(0.2, 0.75, 0.25, 1);
+  transition: opacity 260ms ease 420ms, transform 360ms var(--ease-strike) 420ms;
 }
 
 .js .hero-ready .hero-title,
@@ -1493,7 +1581,39 @@ main {
 }
 
 .js .hero-statement {
-  transition-delay: 100ms;
+  transition-delay: 640ms;
+}
+
+/* Gallery zoom: a full-screen view of one photograph. Enabled by data-zoom on a gallery. */
+.zoom-ready .photo-frame {
+  cursor: zoom-in;
+}
+
+.zoom-view {
+  position: fixed;
+  z-index: 200;
+  inset: 0;
+  background: rgb(23 22 19 / 96%);
+  cursor: zoom-out;
+  opacity: 0;
+  transition: opacity 180ms ease;
+}
+
+.zoom-view.is-visible {
+  opacity: 1;
+}
+
+.zoom-view img {
+  position: absolute;
+  inset: clamp(0.5rem, 2vw, 2rem);
+  width: calc(100% - 2 * clamp(0.5rem, 2vw, 2rem));
+  max-width: none;
+  height: calc(100% - 2 * clamp(0.5rem, 2vw, 2rem));
+  object-fit: contain;
+}
+
+.zoom-open {
+  overflow: hidden;
 }
 
 @media (max-width: 52rem) {
@@ -1620,6 +1740,18 @@ main {
   .hero-statement-frame {
     width: min(88%, 28rem);
     margin-left: auto;
+  }
+
+  .hero-copy::before {
+    top: -5%;
+    left: -8%;
+    width: 116%;
+    height: 110%;
+    transform: rotate(-2deg);
+  }
+
+  .hero-statement-frame::after {
+    background: var(--ink);
   }
 
   .project-grid,

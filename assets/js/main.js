@@ -35,7 +35,7 @@ document.querySelectorAll("img").forEach((image) => {
 });
 
 const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
-const revealItems = document.querySelectorAll("[data-reveal]");
+const revealItems = document.querySelectorAll("[data-reveal], .section-heading");
 
 if (reducedMotion || !("IntersectionObserver" in window)) {
   revealItems.forEach((item) => item.classList.add("is-visible"));
@@ -111,3 +111,72 @@ document.querySelectorAll('a[href^="mailto:"]').forEach((link) => {
 document.querySelectorAll("[data-copy-email]").forEach((button) => {
   button.addEventListener("click", () => announceEmail(button.dataset.copyEmail));
 });
+
+// Gallery zoom: click a photograph to view it full screen; click anywhere to close.
+// Only galleries marked with data-zoom (the work project pages) get this.
+const zoomGalleries = document.querySelectorAll("[data-zoom]");
+
+if (zoomGalleries.length) {
+  const zoomView = document.createElement("div");
+  const zoomImage = document.createElement("img");
+  let zoomSource = null;
+  let zoomTimer;
+
+  zoomView.className = "zoom-view";
+  zoomView.hidden = true;
+  zoomView.tabIndex = -1;
+  zoomView.setAttribute("role", "dialog");
+  zoomView.setAttribute("aria-modal", "true");
+  zoomView.setAttribute("aria-label", "Enlarged photograph. Click anywhere or press Escape to close.");
+  zoomView.append(zoomImage);
+  document.body.append(zoomView);
+
+  const closeZoom = () => {
+    if (zoomView.hidden) return;
+    zoomView.classList.remove("is-visible");
+    document.documentElement.classList.remove("zoom-open");
+    clearTimeout(zoomTimer);
+    zoomTimer = setTimeout(() => {
+      zoomView.hidden = true;
+      zoomImage.removeAttribute("src");
+    }, reducedMotion ? 0 : 180);
+    zoomSource?.focus({ preventScroll: true });
+  };
+
+  const openZoom = (frame) => {
+    const image = frame.querySelector("img");
+    if (!image || !image.naturalWidth) return;
+    clearTimeout(zoomTimer);
+    zoomSource = frame;
+    zoomImage.src = image.currentSrc || image.src;
+    zoomImage.alt = image.alt;
+    zoomView.hidden = false;
+    document.documentElement.classList.add("zoom-open");
+    requestAnimationFrame(() => zoomView.classList.add("is-visible"));
+    zoomView.focus({ preventScroll: true });
+  };
+
+  zoomView.addEventListener("click", closeZoom);
+  zoomView.addEventListener("keydown", (event) => {
+    if (["Escape", "Enter", " "].includes(event.key)) {
+      event.preventDefault();
+      closeZoom();
+    }
+  });
+
+  zoomGalleries.forEach((gallery) => {
+    gallery.classList.add("zoom-ready");
+    gallery.querySelectorAll(".photo-frame").forEach((frame) => {
+      frame.tabIndex = 0;
+      frame.setAttribute("role", "button");
+      frame.setAttribute("aria-label", `Enlarge: ${frame.querySelector("img")?.alt || "photograph"}`);
+      frame.addEventListener("click", () => openZoom(frame));
+      frame.addEventListener("keydown", (event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          openZoom(frame);
+        }
+      });
+    });
+  });
+}
