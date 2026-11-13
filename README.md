@@ -1,36 +1,48 @@
 # Mingjie Yu Photography
 
-A build-free portfolio for GitHub Pages. The site uses plain HTML, CSS, and a small JavaScript file.
+A build-free photography portfolio for GitHub Pages: plain HTML, one stylesheet and one small JavaScript file.
 
-## Before launch
+- Live site: https://jasonnotreally.github.io/JasonPhotoWEb/
+- Detailed working rules, design system and page recipes: see `AGENT.md`
 
-1. Replace every occurrence of `your-email@example.com` with the real enquiry address.
-2. Add the About portrait at `assets/images/about/portrait.webp`.
-3. Add the prepared WebP photographs using the paths below.
-4. Preview locally from the repository root with `python -m http.server 8000`.
-5. Push to `main`; the existing Pages workflow publishes the repository.
+## Pages
 
-## Image paths
+- `index.html`: home
+- `work/`: work index and eight project galleries (`on-film`, `portrait-studies`, `quiet-objects`, `selected-events`, `city-within`, `rocky-mountains`, `natural-studies`, `wildlife`)
+- `reviews/`: camera and lens reviews, grouped into six systems (`canon-fd`, `contax-n`, `contax-rf`, `ltm-m39`, `medium-format`, `pentax-k`)
+- `about/` and `commission/`
 
-All photographs should be WebP files with a longest edge of approximately 2400 pixels. The HTML currently expects:
+Shared files live in `assets/`: `css/styles.css`, `js/main.js`, self-hosted IBM Plex fonts in `fonts/`, and photographs in `images/`.
 
-- `assets/images/on-film/01.webp` through `15.webp`
-- `assets/images/portrait-studies/01.webp` through `10.webp`
-- `assets/images/quiet-objects/01.webp` through `08.webp`
-- `assets/images/city-within/01.webp` through `08.webp`
-- `assets/images/rocky-mountains/01.webp` through `06.webp`
-- `assets/images/natural-studies/01.webp` through `10.webp`
-- `assets/images/wildlife/01.webp` through `08.webp`
-- `assets/images/about/portrait.webp`
+## Preview locally
 
-Selected Events expects five photographs for each event:
+From the repository root:
 
-- `fashion-for-change-01.webp` through `fashion-for-change-05.webp`
-- `tedx-01.webp` through `tedx-05.webp`
-- `tech-horizons-executive-forum-01.webp` through `tech-horizons-executive-forum-05.webp`
-- `quantify-01.webp` through `quantify-05.webp`
-- `canadian-engineering-competition-01.webp` through `canadian-engineering-competition-05.webp`
+```
+python -m http.server 8000
+```
 
-`assets/images/on-film/01.webp` is both the homepage hero and the On Film cover. Every other main project uses `01.webp` as its cover. Selected Events uses `fashion-for-change-01.webp`.
+Then open http://localhost:8000/.
 
-To change a gallery sequence, rename the files or move the corresponding `<figure>` blocks in that project's `index.html`. Add or remove a `gallery-row` wrapper to change whether two photographs appear together on wide screens.
+## Publish
+
+Work on the `dev` branch. Pushing to `main` runs `.github/workflows/static.yml`, which publishes the whole repository to GitHub Pages, so everything committed is public.
+
+## Images
+
+- WebP only, longest edge at most 2400 pixels, lowercase file names.
+- Work photographs go in `assets/images/<project>/`, numbered `01.webp`, `02.webp` and so on. Selected Events files are prefixed with the event name, for example `tedx-01.webp`.
+- Review photographs go in `assets/images/reviews/<system>/<item>/`.
+- The About portrait is `assets/images/about/portrait.webp`.
+- A gallery's sequence is the order of the `<figure>` blocks in that project's `index.html`, not the file numbers. Wrap two figures in a `gallery-row` to show them side by side on wide screens.
+- Each project card names its cover image directly in `work/index.html` and `index.html`.
+
+## Image manager
+
+`image-manager/` is a temporary local tool for adding, replacing, removing and reordering photographs, reordering project cards and editing page text. Put the folder in the repository root, double-click `Launch Image Manager.bat`, make the changes, press Apply, then delete the folder before pushing. It is listed in `.gitignore` and is never published. Its own `README.txt` has the full instructions.
+
+## Features worth knowing
+
+- Clicking a photograph in a work gallery opens it full screen; clicking anywhere closes it. This is switched on by the `data-zoom` attribute on a gallery.
+- Email links also copy the address and show a confirmation, for visitors without a mail application.
+- All animation is switched off for visitors who ask their device for reduced motion, and every page works without JavaScript.
