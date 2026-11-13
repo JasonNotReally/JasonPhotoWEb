@@ -1690,6 +1690,87 @@ main {
   }
 }
 
+.commission-intro .button {
+  border-color: var(--paper-light);
+  background: var(--paper-light);
+  color: var(--ink);
+}
+
+.commission-intro .button:hover {
+  border-color: var(--red);
+  background: var(--red);
+  color: var(--paper-light);
+}
+
+.enquiry-actions {
+  display: grid;
+  justify-items: start;
+  gap: 0.85rem;
+}
+
+.commission-intro .email-line,
+.commission-note .email-line {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem 0.6rem;
+  max-width: none;
+  margin: 0;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.82rem;
+  letter-spacing: 0.02em;
+  line-height: 1.5;
+}
+
+.email-line a {
+  overflow-wrap: anywhere;
+}
+
+.copy-email {
+  padding: 0.3rem 0.6rem;
+  border: 1px solid currentColor;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: 0.7rem;
+  letter-spacing: 0.075em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color 180ms ease, color 180ms ease;
+}
+
+.copy-email:hover {
+  border-color: var(--red);
+  background: var(--red);
+  color: var(--paper-light);
+}
+
+.site-toast {
+  position: fixed;
+  bottom: 1.5rem;
+  left: 50%;
+  z-index: 50;
+  max-width: calc(100vw - 2rem);
+  padding: 0.8rem 1.1rem;
+  border: 1px solid var(--paper-light);
+  background: var(--ink);
+  color: var(--paper-light);
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.78rem;
+  line-height: 1.4;
+  text-align: center;
+  overflow-wrap: anywhere;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, 0.75rem);
+  transition: opacity 180ms ease, transform 180ms ease;
+}
+
+.site-toast.is-visible {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;

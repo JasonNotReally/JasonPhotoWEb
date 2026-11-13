@@ -6,3 +6,6 @@
 # Operating-system files.
 .DS_Store
 Thumbs.db
+
+# Temporary image manager tool; delete before pushing.
+/image-manager/

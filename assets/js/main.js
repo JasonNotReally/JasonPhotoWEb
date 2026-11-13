@@ -55,3 +55,59 @@ if (reducedMotion || !("IntersectionObserver" in window)) {
 }
 
 requestAnimationFrame(() => document.querySelector(".hero")?.classList.add("hero-ready"));
+
+// Email links: a mailto link does nothing for visitors without a mail app,
+// so every email link also copies the address and says so.
+let toastTimer;
+const showToast = (message) => {
+  let toast = document.querySelector(".site-toast");
+  if (!toast) {
+    toast = document.createElement("div");
+    toast.className = "site-toast";
+    toast.setAttribute("role", "status");
+    toast.setAttribute("aria-live", "polite");
+    document.body.append(toast);
+  }
+  toast.textContent = message;
+  requestAnimationFrame(() => toast.classList.add("is-visible"));
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toast.classList.remove("is-visible"), 4500);
+};
+
+const copyText = async (text) => {
+  try {
+    await navigator.clipboard.writeText(text);
+    return true;
+  } catch (error) {
+    const field = document.createElement("textarea");
+    field.value = text;
+    field.setAttribute("readonly", "");
+    field.style.position = "fixed";
+    field.style.opacity = "0";
+    document.body.append(field);
+    field.select();
+    let copied = false;
+    try {
+      copied = document.execCommand("copy");
+    } catch (fallbackError) {
+      copied = false;
+    }
+    field.remove();
+    return copied;
+  }
+};
+
+const announceEmail = async (address) => {
+  const copied = await copyText(address);
+  showToast(copied ? `Email address copied: ${address}` : `Email: ${address}`);
+};
+
+document.querySelectorAll('a[href^="mailto:"]').forEach((link) => {
+  link.addEventListener("click", () => {
+    announceEmail(decodeURIComponent(link.getAttribute("href").slice(7).split("?")[0]));
+  });
+});
+
+document.querySelectorAll("[data-copy-email]").forEach((button) => {
+  button.addEventListener("click", () => announceEmail(button.dataset.copyEmail));
+});
